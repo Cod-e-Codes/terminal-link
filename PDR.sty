@@ -1,0 +1,121 @@
+PDR: Terminal-Link (LAN MVP)
+---------------------------
+
+1. Title
+   Terminal-Link — LAN-only MVP: secure, minimal, terminal-native phone<->desktop link.
+
+2. Objective
+   Deliver a lightweight, self-hosted, terminal-first app (phone client + desktop client) that syncs messages, transfers files, and forwards notifications over LAN with strong encryption and minimal external dependencies.
+
+3. Goals (MUST)
+   • LAN-only peer-to-peer operation (mDNS discovery + manual pairing fallback).  
+   • End-to-end encryption for all traffic (handshake + symmetric encryption).  
+   • Small, single binary per platform (Go preferred).  
+   • TUI for desktop; Android client runnable under Termux and/or standalone service.  
+   • Reliable file transfer (chunking, resume).  
+   • No cloud components, no telemetry, no external services.
+
+4. Non-Goals (NOT in MVP)
+   • Cloud relay or persistent internet-based pairing.  
+   • Rich GUI or mobile-native UI beyond a minimal Termux-compatible client.  
+   • Full notification parsing for every OEM — support common notification types only.  
+   • Complex plugin system.
+
+5. Success Criteria (exit criteria)
+   • Desktop and Android clients can discover each other on the same LAN and pair.  
+   • Secure channel established with authenticated E2E encryption.  
+   • Text messages and files up to 100MB can be transferred reliably (chunked, resumable).  
+   • Latency under 200ms for text messages on typical LAN.  
+   • Binaries build reproducibly for Linux, macOS, Windows, Android; desktop binary ≤ 15MB (strip/debug off).  
+   • Minimal documentation + README + quickstart for pairing and usage.
+
+6. Stakeholders
+   • Product owner: you (developer).  
+   • Primary users: developers and privacy-conscious individuals who prefer terminal tools.  
+   • Platforms: Linux, macOS, Windows, Android (Termux).
+
+7. Core Features (MVP)
+   A. Discovery
+      - mDNS / DNS-SD advertising & browsing.  
+      - Manual pairing via short auth code and QR (QR optional; plain code OK).
+   B. Pairing & Auth
+      - Ephemeral authenticated handshake (X25519 key exchange + signature) leading to a stored peer identity.  
+      - Short-lived pairing code displayed on both devices for confirmation.
+   C. Transport
+      - WebSocket over TLS (self-signed allowed) or a lightweight TCP+Noise session — choose one (recommend Noise_XX over TCP for simplicity and no TLS dependency).  
+      - Framing protocol with message types: TEXT, FILE_META, FILE_CHUNK, ACK, CONTROL.
+   D. Messaging
+      - Bidirectional plain-text messages with local timestamps.  
+      - Simple message history stored in a tiny local DB or flat file (configurable).
+   E. File Transfer
+      - Chunked transfer (e.g., 64KB chunks), with metadata, progress, and resume support.  
+      - Integrity checks (per-chunk checksum + final SHA256).
+   F. TUI
+      - Simple ncurses/Bubble Tea interface: peer list, message view, file send/receive, logs.
+   G. CLI Mode
+      - Non-interactive CLI for quick send/receive scripting (send-file, send-text).
+   H. Security
+      - Persistent local keypair in encrypted keyfile (user passphrase optional).  
+      - Secure defaults: strong cipher suite, authenticated handshake, replay protection.
+
+8. Tech Stack & Libraries
+   • Language: Go (single static binary; cross-compile).  
+   • Crypto: noise protocol (github.com/flynn/noise or go-noise) or x/crypto + libsodium alternatives; prefer Noise_XX with X25519 + ChaCha20-Poly1305.  
+   • Discovery: github.com/grandcat/zeroconf or mdns minimal.  
+   • TUI: charmbracelet/bubbletea or tcell. Keep UI optional so core works headless.  
+   • Storage: optional SQLite (mattn/go-sqlite3) or simple bolt/Badger; prefer plain JSON lines for MVP to avoid cgo.  
+   • Build/CI: GitHub Actions producing multi-platform binaries.
+
+9. Architecture (high level)
+   - Peer A (desktop) <> LAN <> Peer B (phone).  
+   - Each peer runs the same daemon capable of client/server roles (peer-to-peer).  
+   - Discovery -> Pairing -> Persistent secure session -> Messaging & file transfer.
+
+10. Protocol Summary (MVP)
+    - Discovery: mDNS advertises service `_tlnk._tcp` with port & short name.  
+    - Pairing: generate ephemeral X25519 keypair; show short pairing code = 6-digit from HMAC of public keys; user confirms.  
+    - Session: derive symmetric keys (AEAD) via Noise_XX; all subsequent messages are framed and encrypted.  
+    - Messages: JSON-encoded envelopes, binary for file chunks, with sequence and checksums.
+
+11. Performance Targets
+    • Text RTT < 200ms on typical LAN.  
+    • File throughput ≥ 50 MB/s on gigabit LAN (practical bottleneck dependent).  
+    • Memory usage low (< 50MB) during operation; streaming file transfer to disk.
+
+12. Privacy & Security Requirements
+    • No plaintext over the wire.  
+    • Keys never leave device storage unless user exports.  
+    • Provide instructions/comments for creating self-signed certs or using Noise to avoid TLS.  
+    • Default: no telemetry, optional opt-in crash/reporting only.
+
+13. Testing & QA
+    • Unit tests for handshake, framing, chunking, checksum.  
+    • Integration tests: local loopback + simulated LAN (two processes).  
+    • Manual tests: Termux ↔ Linux, Windows ↔ Android, macOS ↔ Android.  
+    • Fuzz testing for parser/decoder.
+
+14. Deliverables (MVP)
+    1. Cross-compiled binaries for Linux/macOS/Windows/Android.  
+    2. Source repo with README, quickstart, build scripts, and CI.  
+    3. Minimal TUI and CLI usage guide.  
+    4. Example pairing walkthrough and sample log outputs.  
+    5. Basic unit & integration tests.
+
+15. Roadmap (phased)
+    Phase 0 — Design & proto (this doc + protocol sketch). (1–2 days)  
+    Phase 1 — Core daemon + handshake + discovery + text messaging CLI (3–5 days)  
+    Phase 2 — File transfer (chunking, resume) + TUI (4–7 days)  
+    Phase 3 — Cross-compile + CI + docs + tests (2–4 days)  
+    Phase 4 — Polish, encrypt keyfile, packaging (2–4 days)
+
+16. Risks & Mitigations
+    • mDNS reliability across certain networks — provide manual IP+port pairing fallback.  
+    • Android background restrictions — document Termux/service mode; accept initial limitation for MVP.  
+    • Crypto implementation bugs — rely on well-maintained Noise lib and audited AEAD.
+
+17. Open Decisions (to settle ASAP)
+    • TLS over WebSocket vs Noise-over-TCP — recommend Noise for fewer dependencies.  
+    • Storage format: SQLite vs JSON lines — recommend JSON lines for zero-cgo builds.
+
+18. Acceptance
+    When the team can demonstrate a full pairing and text+file transfer between desktop and Android on a LAN with E2E encryption and working TUI/CLI, mark MVP done.

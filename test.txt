@@ -1,0 +1,15 @@
+This is a test file for Terminal-Link file transfer demonstration.
+
+Features being tested:
+- Chunked file transfer (64KB chunks)
+- SHA256 verification
+- Progress tracking
+- Resume capability infrastructure
+
+The file transfer system includes:
+1. File metadata exchange
+2. Chunked data transfer with checksums
+3. Acknowledgment system
+4. Final integrity verification
+
+This file should be small enough to transfer quickly for testing purposes. 
