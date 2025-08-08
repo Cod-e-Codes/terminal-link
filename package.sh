@@ -11,7 +11,7 @@ YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
-VERSION=${1:-"1.0.0"}
+VERSION=${1:-"0.1.0"}
 RELEASE_DIR="release"
 BUILD_DIR="dist"
 

@@ -28,10 +28,14 @@ import (
 )
 
 const (
+	// ServiceName is the mDNS service name for Terminal-Link discovery
 	ServiceName = "_tlnk._tcp"
+	// ServicePort is the default port for Terminal-Link service
 	ServicePort = 8080
-	ChunkSize   = 64 * 1024 // 64KB chunks
-	Version     = "1.0.0"
+	// ChunkSize is the size of file transfer chunks (64KB)
+	ChunkSize = 64 * 1024
+	// Version is the current version of Terminal-Link
+	Version = "0.1.0"
 )
 
 // KeyStore represents encrypted persistent key storage

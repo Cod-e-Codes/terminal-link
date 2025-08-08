@@ -8,7 +8,7 @@ This document provides comprehensive instructions for deploying and packaging Te
 
 Update the version in `main.go`:
 ```go
-const Version = "1.0.0"
+const Version = "0.1.0"
 ```
 
 ### 2. Building Release Binaries
@@ -25,17 +25,17 @@ make dist
 
 ```bash
 # Create packages for all platforms
-./package.sh 1.0.0
+./package.sh 0.1.0
 ```
 
 This creates:
-- `terminal-link-v1.0.0-linux-amd64.tar.gz`
-- `terminal-link-v1.0.0-linux-arm64.tar.gz`
-- `terminal-link-v1.0.0-darwin-amd64.tar.gz`
-- `terminal-link-v1.0.0-darwin-arm64.tar.gz`
-- `terminal-link-v1.0.0-windows-amd64.zip`
-- `terminal-link-v1.0.0-windows-arm64.zip`
-- `terminal-link-v1.0.0-android-arm64.tar.gz`
+- `terminal-link-v0.1.0-linux-amd64.tar.gz`
+- `terminal-link-v0.1.0-linux-arm64.tar.gz`
+- `terminal-link-v0.1.0-darwin-amd64.tar.gz`
+- `terminal-link-v0.1.0-darwin-arm64.tar.gz`
+- `terminal-link-v0.1.0-windows-amd64.zip`
+- `terminal-link-v0.1.0-windows-arm64.zip`
+- `terminal-link-v0.1.0-android-arm64.tar.gz`
 
 ### 4. GitHub Release
 
@@ -50,7 +50,7 @@ This creates:
 
 ```bash
 # Extract and install
-tar -xzf terminal-link-v1.0.0-linux-amd64.tar.gz
+tar -xzf terminal-link-v0.1.0-linux-amd64.tar.gz
 sudo cp terminal-link /usr/local/bin/
 sudo chmod +x /usr/local/bin/terminal-link
 
@@ -62,7 +62,7 @@ cp terminal-link ~/.local/bin/
 
 ```bash
 # Extract and install
-tar -xzf terminal-link-v1.0.0-darwin-amd64.tar.gz
+tar -xzf terminal-link-v0.1.0-darwin-amd64.tar.gz
 sudo cp terminal-link /usr/local/bin/
 sudo chmod +x /usr/local/bin/terminal-link
 ```
@@ -79,7 +79,7 @@ sudo chmod +x /usr/local/bin/terminal-link
 
 ```bash
 # Extract and install
-tar -xzf terminal-link-v1.0.0-android-arm64.tar.gz
+tar -xzf terminal-link-v0.1.0-android-arm64.tar.gz
 cp terminal-link ~/bin/
 chmod +x ~/bin/terminal-link
 ```

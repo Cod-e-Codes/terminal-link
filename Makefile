@@ -62,6 +62,12 @@ dist: clean
 	fi
 	@echo "✓ Distribution builds completed"
 
+# Create release packages
+release: dist
+	@echo "Creating release packages..."
+	@chmod +x package.sh && ./package.sh 0.1.0
+	@echo "✓ Release packages created in release/"
+
 # Install locally
 install: build
 	@echo "Installing Terminal-Link..."
@@ -93,6 +99,7 @@ help:
 	@echo "  lint           - Run linter"
 	@echo "  clean          - Clean build artifacts"
 	@echo "  dist           - Build for all platforms"
+	@echo "  release        - Build and create release packages"
 	@echo "  install        - Install locally"
 	@echo "  dev            - Build, test, and lint"
 	@echo "  quick-test     - Quick application test"

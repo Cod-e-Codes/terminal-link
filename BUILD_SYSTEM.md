@@ -93,13 +93,35 @@ GOOS=linux GOARCH=arm64 CGO_ENABLED=0 go build
 
 ### Manual Release
 ```bash
-# Build all platforms
-make dist
+# Build all platforms and create release packages
+make release
 
-# Create release archive
-cd dist
-tar -czf terminal-link-v1.0.0.tar.gz *
+# Or build and package separately
+make dist
+./package.sh 0.1.0
 ```
+
+### Release Process for v0.1.0
+
+1. **Update version in main.go**:
+   ```go
+   const Version = "0.1.0"
+   ```
+
+2. **Build and package**:
+   ```bash
+   make release
+   ```
+
+3. **Create GitHub release**:
+   - Upload all files from `release/` directory
+   - Include `checksums.txt` for verification
+   - Add release notes describing features and fixes
+
+4. **Verify release**:
+   - Test binaries on target platforms
+   - Verify checksums match
+   - Confirm all platforms are included
 
 ## Binary Size Targets
 

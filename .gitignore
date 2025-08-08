@@ -24,6 +24,13 @@ profile.cov
 go.work
 go.work.sum
 
+# Build artifacts and binaries
+terminal-link
+terminal-link.exe
+dist/
+release/
+build/
+
 # env file
 .env
 
