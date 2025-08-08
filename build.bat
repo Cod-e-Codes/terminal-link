@@ -51,9 +51,9 @@ echo Building for windows/amd64...
 set GOOS=windows
 set GOARCH=amd64
 set CGO_ENABLED=
-go build -ldflags="-s -w" -o %BUILD_DIR%\terminal-link-windows-arm64.exe main.go
-for %%A in ("%BUILD_DIR%\terminal-link-windows-arm64.exe") do set size=%%~zA
-echo ✓ Built terminal-link-windows-arm64.exe (!size! bytes)
+go build -ldflags="-s -w" -o %BUILD_DIR%\terminal-link-windows-amd64.exe main.go
+for %%A in ("%BUILD_DIR%\terminal-link-windows-amd64.exe") do set size=%%~zA
+echo ✓ Built terminal-link-windows-amd64.exe (!size! bytes)
 
 echo Building for windows/arm64...
 set GOOS=windows
