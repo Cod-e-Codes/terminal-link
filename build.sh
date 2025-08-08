@@ -49,8 +49,8 @@ build_platform "linux" "amd64" "terminal-link-linux-amd64" ""
 build_platform "linux" "arm64" "terminal-link-linux-arm64" ""
 
 # macOS builds
-build_platform "darwin" "amd64" "terminal-link-darwin-amd64" ""
-build_platform "darwin" "arm64" "terminal-link-darwin-arm64" ""
+build_platform "darwin" "amd64" "terminal-link-darwin-amd64" "CGO_ENABLED=0"
+build_platform "darwin" "arm64" "terminal-link-darwin-arm64" "CGO_ENABLED=0"
 
 # Windows builds
 build_platform "windows" "amd64" "terminal-link-windows-amd64.exe" ""
