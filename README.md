@@ -2,6 +2,8 @@
 
 A LAN-only, secure, terminal-native messaging and file transfer application with end-to-end encryption.
 
+**Current Release: v0.1.0** - Initial MVP with comprehensive test suite, cross-platform builds, and secure file transfer capabilities.
+
 ## Features
 
 - **LAN-only operation**: Uses mDNS discovery with manual IP fallback
@@ -238,10 +240,10 @@ GitHub Actions automatically:
 - Validates binary sizes (< 15MB limit)
 
 **Supported Platforms:**
-- Linux (amd64, arm64)
-- macOS (amd64, arm64) 
-- Windows (amd64, arm64)
-- Android (arm64 via Termux)
+- Linux (amd64, arm64) ✅
+- Windows (amd64, arm64) ✅
+- Android (arm64 via Termux) ✅
+- macOS (amd64, arm64) - requires native macOS environment
 
 ### Manual Cross-Compilation
 
